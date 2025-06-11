@@ -1,5 +1,4 @@
 
-```markdown
 # 📊 Mobile Money Analytics Dashboard (Fullstack)
 
 This project is a complete end-to-end analytics platform for processing and visualizing mobile money transaction data (SMS-based). 
@@ -25,7 +24,6 @@ It extracts SMS backup data, parses relevant transaction details, stores them in
 
 ## 📂 Full Project Structure
 
-```
 ├── backend/
 │   ├── app.py               # Flask API server
 │   ├── config.py            # MySQL DB credentials
@@ -41,7 +39,6 @@ It extracts SMS backup data, parses relevant transaction details, stores them in
 │   ├── statsCards.js    # Stats summary card rendering
 │   └── transactionList.js # Transaction list rendering
 
-````
 
 ---
 
