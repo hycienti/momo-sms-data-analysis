@@ -1,3 +1,4 @@
+# Import the useful libraries; ElementTree to parse and load the data from xml file, re to look for some specific data to categorize and mysql.connector to work with mysql database
 import xml.etree.ElementTree as ET
 import mysql.connector
 import re
