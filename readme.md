@@ -7,7 +7,7 @@ It extracts SMS backup data, parses relevant transaction details, stores them in
 
 ---
 
-## 🔧 System Architecture Overview
+##  System Architecture Overview
 
 - **Backend (Python + MySQL)**
   - Parses exported SMS files (`sms.xml`)
@@ -22,7 +22,7 @@ It extracts SMS backup data, parses relevant transaction details, stores them in
 
 ---
 
-## 📂 Full Project Structure
+## Full Project Structure
 
 ├── backend/
 │   ├── app.py               # Flask API server
@@ -42,9 +42,9 @@ It extracts SMS backup data, parses relevant transaction details, stores them in
 
 ---
 
-# 🚀 Getting Started (Setup Instructions)
+# Getting Started (Setup Instructions)
 
-### 1️⃣ Prerequisites
+### 1️ Prerequisites
 
 - Python 3.9+
 - MySQL 8.x
@@ -54,9 +54,9 @@ It extracts SMS backup data, parses relevant transaction details, stores them in
 
 ---
 
-### 2️⃣ Backend Setup (Python & MySQL)
+### 2️ Backend Setup (Python & MySQL)
 
-#### ✅ Install Python dependencies
+####  Install Python dependencies
 
 ```bash
 pip install flask mysql-connector-python
@@ -96,7 +96,7 @@ http://localhost:5000/api/sms-messages
 
 ---
 
-### 3️⃣ Frontend Setup
+### 3️ Frontend Setup
 
 #### ✅ Launch Frontend
 
@@ -106,14 +106,14 @@ http://localhost:5000/api/sms-messages
 
 ---
 
-# 🔬 Backend Technical Details
+#  Backend Technical Details
 
-### 🧩 SMS Parsing & Data Extraction
+###  SMS Parsing & Data Extraction
 
 * The SMS source file (`sms.xml`) is an Android SMS Backup & Restore export file.
 * Python uses `xml.etree.ElementTree` to parse each `<sms>` record.
 
-### 🧩 Classification Logic
+###  Classification Logic
 
 Inside `sms.py`:
 
@@ -125,7 +125,7 @@ Inside `sms.py`:
   * `transferred`
   * `unknown`
 
-### 🧩 Amount Extraction Logic
+###  Amount Extraction Logic
 
 * `extract_amount()` applies regex patterns like:
 
@@ -139,7 +139,7 @@ r"(\d{1,3}(?:,\d{3})*(?:\.\d{1,2})?)\s*RWF"
   * `40000 RWF`
   * `2000 RWF`
 
-### 🧩 MySQL Schema Overview
+###  MySQL Schema Overview
 
 Table: `sms_messages`
 
@@ -164,11 +164,11 @@ Table: `sms_messages`
 | transaction\_type    | VARCHAR  | Transaction type  |
 | sender\_or\_receiver | VARCHAR  | Contact involved  |
 
-📄 Full SQL schema located in `schema.sql`.
+ Full SQL schema located in `schema.sql`.
 
 ---
 
-# 🔬 Frontend Logic Summary
+#  Frontend Logic Summary
 
 The frontend is fully interactive and designed to consume the backend API responses.
 
@@ -201,7 +201,7 @@ http://localhost:5000/api/sms-messages
 
 ---
 
-# 📊 Current Frontend Features
+#  Current Frontend Features
 
 * Transaction list view
 * Contact-wise transaction breakdown
