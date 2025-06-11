@@ -26,8 +26,6 @@ It extracts SMS backup data, parses relevant transaction details, stores them in
 ## 📂 Full Project Structure
 
 ```
-
-.
 ├── backend/
 │   ├── app.py               # Flask API server
 │   ├── config.py            # MySQL DB credentials
