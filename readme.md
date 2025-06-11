@@ -91,7 +91,7 @@ python backend/app.py
 By default, this will serve API at:
 
 ```
-http://localhost:5000/api/sms_messages
+http://localhost:5000/api/messages
 ```
 
 ---
