@@ -183,7 +183,6 @@ export function renderTimelineChart() {
     });
 }
 
-// Render charts (existing functionality)
 export function renderCharts() {
     renderVolumeChart();
     renderDistributionChart();
