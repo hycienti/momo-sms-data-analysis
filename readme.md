@@ -120,7 +120,7 @@ Inside `sms.py`:
 * `classify_transaction()` function uses string pattern matching to categorize:
 
   * `received`
-  * `payment`
+  * `payments`
   * `deposit`
   * `transferred`
   * `unknown`
