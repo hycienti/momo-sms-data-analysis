@@ -15,11 +15,11 @@ document.addEventListener('DOMContentLoaded', async function () {
     renderStatsCards();
     renderCharts();
     renderTransactionList();
+    filterTransactions();
     setupEventListeners();
     renderContactAnalytics();
     renderTimePatterns();
     renderFinancialInsights();
-    window.showTransactionDetails();
 });
 
 // Setup event listeners
