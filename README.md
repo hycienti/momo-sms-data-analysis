@@ -1,213 +1,170 @@
 
-# 📊 Mobile Money Analytics Dashboard (Fullstack)
+# MoMo SMS Data Analysis
 
-This project is a complete end-to-end analytics platform for processing and visualizing mobile money transaction data (SMS-based). 
-
-It extracts SMS backup data, parses relevant transaction details, stores them into a MySQL database, exposes a backend API, and renders a frontend dashboard to visualize financial insights interactively.
+A full-stack data analysis project for processing, analyzing, and visualizing SMS-based financial transaction data. The system extracts raw SMS data, parses and stores it in a SQLite database, exposes a Flask API for data retrieval, and visualizes the analytics on a modern web dashboard.
 
 ---
 
-##  System Architecture Overview
+## 📂 Project Structure
 
-- **Backend (Python + MySQL)**
-  - Parses exported SMS files (`sms.xml`)
-  - Extracts transaction data, amounts, dates, types, contacts, and financial information
-  - Inserts clean data into MySQL database (`sms_messages` table)
-  - Exposes a REST API with Flask for frontend consumption
-
-- **Frontend (Vanilla JavaScript + TailwindCSS + Chart.js)**
-  - Fetches parsed transaction data from backend API
-  - Visualizes user’s mobile money transactions as charts, stats, and tables
-  - Supports advanced filtering and contact-level analytics
-
----
-
-## Full Project Structure
-
-├── backend/
-│   ├── app.py               # Flask API server
-│   ├── config.py            # MySQL DB credentials
-│   ├── sms.py               # SMS parsing and extraction logic
-│   ├── sms.xml              # Raw exported SMS backup (input data)
-│   └── schema.sql           # MySQL database schema definition
-└── frontend/
-├── index.html           # Main frontend dashboard
-├── js/
-│   ├── charts.js        # Chart.js rendering logic
-│   ├── contactAnalytics.js # Contact level analytics logic
-│   ├── calculations.js  # Global statistics calculations
-│   ├── statsCards.js    # Stats summary card rendering
-│   └── transactionList.js # Transaction list rendering
-
+```
+momo-sms-data-analysis/
+├── backend/           # Flask API + Data ingestion
+│   ├── app.py         # Main Flask app with API routes
+│   ├── Db_Config.py   # SQLite database connection config
+│   ├── create_table.py # DB schema setup script
+│   ├── truncate.py    # Utility to truncate database tables
+│   ├── scripts.py     # XML data parsing and DB insertion logic
+│   ├── modified_sms_v2.xml # Raw SMS dataset (XML format)
+│   └── My_Database.db # SQLite database file (auto-generated after processing)
+└── frontend/          # Pure HTML/JS dashboard using TailwindCSS & ApexCharts
+    ├── index.html
+    └── js/
+        ├── main.js
+        ├── utils/
+        ├── components/
+        └── data/
+```
 
 ---
 
-# Getting Started (Setup Instructions)
+## ⚙ Backend Setup (Python Flask API)
 
-### 1️ Prerequisites
+### 1️⃣ Prerequisites
 
-- Python 3.9+
-- MySQL 8.x
-- Node.js 16+
-- npm or yarn (only if modifying frontend build)
-- Browser (for running frontend directly)
+- Python 3.9+ installed
+- Git installed
 
----
-
-### 2️ Backend Setup (Python & MySQL)
-
-####  Install Python dependencies
+### 2️⃣ Clone the repository
 
 ```bash
-pip install flask mysql-connector-python
-````
+git clone https://github.com/hycienti/momo-sms-data-analysis.git
+cd momo-sms-data-analysis/backend
+```
 
-#### ✅ Setup MySQL database
+### 3️⃣ (Recommended) Create Virtual Environment
 
 ```bash
-mysql -u root -p
-source backend/schema.sql
+python3 -m venv venv
+source venv/bin/activate  # For Linux/MacOS
+venv\Scripts\activate   # For Windows
 ```
 
-> ✅ This creates the required `sms_messages` table used by the backend.
-
-#### ✅ Import SMS data
-
-* Place your exported SMS backup file as `sms.xml` inside `/backend`.
-* Run the extraction:
+### 4️⃣ Install Dependencies
 
 ```bash
-python backend/sms.py
+pip install flask flask-cors
 ```
 
-> ✅ This parses, classifies, and inserts transactions into MySQL.
+### 5️⃣ Create Database Schema
 
-#### ✅ Run Flask API Server
+First, generate the SQLite database:
 
 ```bash
-python backend/app.py
+python create_table.py
 ```
 
-By default, this will serve API at:
+### 6️⃣ Load Raw XML Data into Database
 
+The SMS data provided (`modified_sms_v2.xml`) is loaded into the database:
+
+```bash
+python scripts.py
 ```
-http://localhost:5000/api/messages
+
+This parses and extracts SMS transactions and inserts them into `My_Database.db`.
+
+### 7️⃣ Run the Flask API Server
+
+```bash
+python app.py
 ```
+
+The Flask app will be running at: `http://127.0.0.1:5000`
+
+### 8️⃣ Available API Endpoints
+
+- `GET /api/messages` — Returns all parsed SMS transaction data
+
+> Note: `flask_cors` has been configured to allow requests from frontend.
 
 ---
 
-### 3️ Frontend Setup
+## 💻 Frontend Setup
 
-#### ✅ Launch Frontend
+### 1️⃣ Navigate to frontend directory
 
-* No build step needed.
-* Simply open `frontend/index.html` directly in your browser.
-* Ensure your Flask API server is running in parallel.
+```bash
+cd ../frontend
+```
+
+### 2️⃣ Project Files
+
+- `index.html` — Main entry page
+- `js/components/` — Modularized JS components rendering charts, stats, and analytics.
+- `js/data/` — Contains mock data files and optionally fetches live data via API.
+- `js/utils/` — Contains helper functions for calculations and tab management.
+
+### 3️⃣ Run Frontend
+
+Since it's pure HTML/CSS/JS you can simply open `index.html` directly in your browser.
+
+For local server (recommended to avoid CORS issues):
+
+```bash
+# Install live-server globally if not installed
+npm install -g live-server
+
+# Start local server in frontend directory
+live-server
+```
+
+This will automatically open: `http://127.0.0.1:8080`
+
+> The frontend expects backend running on: `http://127.0.0.1:5000`
 
 ---
 
-#  Backend Technical Details
+## 📊 Data Flow Summary
 
-###  SMS Parsing & Data Extraction
-
-* The SMS source file (`sms.xml`) is an Android SMS Backup & Restore export file.
-* Python uses `xml.etree.ElementTree` to parse each `<sms>` record.
-
-###  Classification Logic
-
-Inside `sms.py`:
-
-* `classify_transaction()` function uses string pattern matching to categorize:
-
-  * `received`
-  * `payments`
-  * `deposit`
-  * `transferred`
-  * `unknown`
-
-###  Amount Extraction Logic
-
-* `extract_amount()` applies regex patterns like:
-
-```python
-r"(\d{1,3}(?:,\d{3})*(?:\.\d{1,2})?)\s*RWF"
-```
-
-* Supports parsing amounts like:
-
-  * `1,000 RWF`
-  * `40000 RWF`
-  * `2000 RWF`
-
-###  MySQL Schema Overview
-
-Table: `sms_messages`
-
-| Column               | Type     | Description       |
-| -------------------- | -------- | ----------------- |
-| id                   | INT (PK) | Auto increment ID |
-| protocol             | VARCHAR  | SMS protocol      |
-| address              | VARCHAR  | SMS sender        |
-| date                 | BIGINT   | Unix timestamp    |
-| type                 | INT      | SMS type          |
-| subject              | VARCHAR  | Subject           |
-| body                 | TEXT     | Full message      |
-| service\_center      | VARCHAR  | Service center    |
-| read\_flag           | BOOLEAN  | Read status       |
-| status               | INT      | Delivery status   |
-| locked               | BOOLEAN  | Lock flag         |
-| date\_sent           | BIGINT   | Unix timestamp    |
-| sub\_id              | INT      | Sub ID            |
-| readable\_date       | VARCHAR  | Human date        |
-| contact\_name        | VARCHAR  | Name extracted    |
-| extracted\_amount    | DECIMAL  | Parsed amount     |
-| transaction\_type    | VARCHAR  | Transaction type  |
-| sender\_or\_receiver | VARCHAR  | Contact involved  |
-
- Full SQL schema located in `schema.sql`.
+1️⃣ You provide raw SMS file (`modified_sms_v2.xml`)  
+2️⃣ `scripts.py` parses, extracts relevant fields (sender, amount, timestamps etc.)  
+3️⃣ Parsed data is stored inside SQLite database (`My_Database.db`)  
+4️⃣ Flask backend serves the data through `/api/messages`  
+5️⃣ Frontend fetches data via Axios and renders analytics using ApexCharts.
 
 ---
 
-#  Frontend Logic Summary
+## 📝 Development Notes
 
-The frontend is fully interactive and designed to consume the backend API responses.
-
-### ✅ Main Modules Breakdown
-
-| File                  | Responsibility                             |
-| --------------------- | ------------------------------------------ |
-| `index.html`          | Base structure with chart containers       |
-| `charts.js`           | Chart.js visualization of transaction data |
-| `calculations.js`     | Financial stats computations               |
-| `contactAnalytics.js` | Contact-wise aggregations                  |
-| `transactionList.js`  | Transaction history list rendering         |
-| `statsCards.js`       | Summary statistics cards generation        |
-
-### ✅ Data Flow
-
-1. Frontend sends `GET` request to:
-
-```
-http://localhost:5000/api/sms-messages
-```
-
-2. Response JSON is processed globally for:
-
-* Transaction counts
-* Total income & expenses
-* Most frequent contacts
-* Daily/weekly trends
-* Individual contact histories
+- Backend uses **Flask + SQLite**
+- Frontend uses **HTML + TailwindCSS + Vanilla JS + ApexCharts**
+- Clean modular frontend component structure.
+- Fully isolated backend and frontend — easy to decouple or extend.
 
 ---
 
-#  Current Frontend Features
+## 🔧 Troubleshooting
 
-* Transaction list view
-* Contact-wise transaction breakdown
-* Total received, paid, transferred summaries
-* Pie charts for transaction types
-* Contact-based most frequent partners
-* Total income vs total expenses comparisons
-* Auto updates via REST API without page refresh
-* Simple filter options to focus on particular transaction types
+- If you face `CORS` errors, ensure both frontend and backend are running on correct ports (`5000` for backend, `8080` for frontend).
+- Use browser dev tools (F12) to monitor API requests/responses.
+
+---
+
+## 🚀 Future Improvements
+
+- Dockerize full stack for simpler deployment.
+- Replace SQLite with PostgreSQL for production use.
+- Build full authentication & authorization.
+- Add filtering and search features for better analysis.
+- Build mobile-first responsive UI.
+
+---
+
+## 🙌 Author
+
+> Built by Hycient Igweze — Fullstack Engineer
+
+---
+
+**This README was fully engineered to be usable by any developer to get your repo running out of the box.**
