@@ -5,7 +5,7 @@ import sqlite3
 conn = sqlite3.connect("My_database.db")
 cursor = conn.cursor()
 
-parse_data = ET.parse("modified_sms_v2.xml")
+parse_data = ET.parse("backend/modified_sms_v2.xml")
 root = parse_data.getroot()
 
 def parse_sms_body(body):
