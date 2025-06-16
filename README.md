@@ -163,7 +163,10 @@ This will automatically open: `http://127.0.0.1:8080`
 
 ## 🙌 Author
 
-> Built by Hycient Igweze — Fullstack Engineer
+> Hycient Igweze
+> Principie Cyubahiro
+> Erica Ishimwe
+> Gaju Keane
 
 ---
 
