@@ -3,6 +3,9 @@
 
 A full-stack data analysis project for processing, analyzing, and visualizing SMS-based financial transaction data. The system extracts raw SMS data, parses and stores it in a SQLite database, exposes a Flask API for data retrieval, and visualizes the analytics on a modern web dashboard.
 
+# Presentation Video
+[https://drive.google.com/file/d/1NQOw2nOKGeTVyaOdgaQJrJwHQ8FdhDcP/view?usp=sharing]
+
 ---
 
 ## 📂 Project Structure
