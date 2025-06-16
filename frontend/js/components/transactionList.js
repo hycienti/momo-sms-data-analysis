@@ -1,15 +1,16 @@
 
+import { apiData } from '../data/apiData.js';
 import { mockData } from '../data/mockData.js';
 import { extractBalance } from '../utils/calculations.js';
 
-let filteredData = [...mockData];
+let filteredData = [...apiData];
 
 // Render transaction list
 export function renderTransactionList() {
     const container = document.getElementById('transactionList');
     const countElement = document.getElementById('transactionCount');
 
-    countElement.textContent = `Showing ${filteredData.length} of ${mockData.length} transactions`;
+    countElement.textContent = `Showing ${filteredData.length} of ${apiData.length} transactions`;
 
     container.innerHTML = filteredData.map(transaction => `
         <div class="border rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer card-hover" 
@@ -55,7 +56,7 @@ export function filterTransactions() {
     const searchTerm = document.getElementById('searchInput').value.toLowerCase();
     const filterType = document.getElementById('filterType').value;
 
-    filteredData = mockData.filter(transaction => {
+    filteredData = apiData.filter(transaction => {
         const matchesSearch = transaction.sender_or_receiver.toLowerCase().includes(searchTerm) ||
             transaction.body.toLowerCase().includes(searchTerm);
         const matchesType = filterType === 'all' || transaction.transaction_type === filterType;
@@ -67,7 +68,7 @@ export function filterTransactions() {
 
 // Show transaction details modal
 export function showTransactionDetails(transactionId) {
-    const transaction = mockData.find(t => t.id === transactionId);
+    const transaction = apiData.find(t => t.id === transactionId);
     if (!transaction) return;
 
     const modal = document.getElementById('transactionModal');

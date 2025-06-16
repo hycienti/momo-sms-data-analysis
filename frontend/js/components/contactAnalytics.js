@@ -1,4 +1,4 @@
-
+import { apiData } from '../data/apiData.js';
 import { mockData } from '../data/mockData.js';
 
 let charts = {};
@@ -10,7 +10,7 @@ export function renderContactAnalytics() {
 }
 
 function renderTopContacts() {
-    const contactData = mockData.reduce((acc, transaction) => {
+    const contactData = apiData.reduce((acc, transaction) => {
         const contact = transaction.sender_or_receiver;
         if (!acc[contact]) {
             acc[contact] = { total: 0, received: 0, sent: 0, count: 0 };
@@ -53,7 +53,7 @@ function renderTopContacts() {
 function renderContactChart() {
     const ctx = document.getElementById('contactChart').getContext('2d');
 
-    const contactData = mockData.reduce((acc, transaction) => {
+    const contactData = apiData.reduce((acc, transaction) => {
         const contact = transaction.sender_or_receiver;
         if (!acc[contact]) {
             acc[contact] = { received: 0, sent: 0 };
@@ -116,7 +116,7 @@ function renderTransactionHeatmap() {
 
     const heatmapData = {};
 
-    mockData.forEach(transaction => {
+    apiData.forEach(transaction => {
         const date = new Date(transaction.date);
         const day = date.getDay();
         const hour = date.getHours();

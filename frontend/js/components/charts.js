@@ -1,4 +1,5 @@
 
+import { apiData } from '../data/apiData.js';
 import { mockData } from '../data/mockData.js';
 import { extractBalance } from '../utils/calculations.js';
 
@@ -8,7 +9,7 @@ let charts = {};
 export function renderVolumeChart() {
     const ctx = document.getElementById('volumeChart').getContext('2d');
 
-    const typeData = mockData.reduce((acc, transaction) => {
+    const typeData = apiData.reduce((acc, transaction) => {
         const type = transaction.transaction_type;
         acc[type] = (acc[type] || 0) + parseFloat(transaction.extracted_amount);
         return acc;
@@ -58,7 +59,7 @@ export function renderVolumeChart() {
 export function renderDistributionChart() {
     const ctx = document.getElementById('distributionChart').getContext('2d');
 
-    const typeCount = mockData.reduce((acc, transaction) => {
+    const typeCount = apiData.reduce((acc, transaction) => {
         const type = transaction.transaction_type;
         acc[type] = (acc[type] || 0) + 1;
         return acc;
@@ -93,7 +94,7 @@ export function renderDistributionChart() {
 export function renderTimelineChart() {
     const ctx = document.getElementById('timelineChart').getContext('2d');
 
-    const sortedData = [...mockData].sort((a, b) => a.date - b.date);
+    const sortedData = [...apiData].sort((a, b) => a.date - b.date);
     let runningBalance = 0;
 
     const timelineData = sortedData.map(transaction => {

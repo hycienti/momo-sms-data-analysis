@@ -1,7 +1,8 @@
-
+import { apiData } from '../data/apiData.js';
 import { mockData } from '../data/mockData.js';
 
 let charts = {};
+
 
 // Time Patterns
 export function renderTimePatterns() {
@@ -14,7 +15,7 @@ function renderHourlyChart() {
     const ctx = document.getElementById('hourlyChart').getContext('2d');
 
     const hourlyData = Array(24).fill(0);
-    mockData.forEach(transaction => {
+    apiData.forEach(transaction => {
         const hour = new Date(transaction.date).getHours();
         hourlyData[hour] += parseFloat(transaction.extracted_amount);
     });
@@ -56,7 +57,7 @@ function renderDailyChart() {
     const dailyData = Array(7).fill(0);
     const dailyCount = Array(7).fill(0);
 
-    mockData.forEach(transaction => {
+    apiData.forEach(transaction => {
         const day = new Date(transaction.date).getDay();
         dailyData[day] += parseFloat(transaction.extracted_amount);
         dailyCount[day] += 1;
@@ -94,7 +95,7 @@ function renderFrequencyAnalysis() {
     const container = document.getElementById('frequencyAnalysis');
 
     // Calculate time between transactions
-    const sortedTransactions = [...mockData].sort((a, b) => a.date - b.date);
+    const sortedTransactions = [...apiData].sort((a, b) => a.date - b.date);
     const intervals = [];
 
     for (let i = 1; i < sortedTransactions.length; i++) {

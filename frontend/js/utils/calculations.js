@@ -1,17 +1,28 @@
 
+import { apiData } from '../data/apiData.js';
 import { mockData } from '../data/mockData.js';
 
 // Enhanced statistics calculation
 export function calculateStats() {
-    const total = mockData.reduce((sum, t) => sum + parseFloat(t.extracted_amount), 0);
-    const received = mockData.filter(t => t.transaction_type === 'received')
-        .reduce((sum, t) => sum + parseFloat(t.extracted_amount), 0);
-    const payments = mockData.filter(t => t.transaction_type === 'payment')
-        .reduce((sum, t) => sum + parseFloat(t.extracted_amount), 0);
-    const uniqueContacts = new Set(mockData.map(t => t.sender_or_receiver)).size;
+    console.log(apiData)
+    const total = apiData.reduce((sum, t) => {
+        const amount = parseFloat(t.extracted_amount);
+        return sum + (isNaN(amount) ? 0 : amount);
+    }, 0);
+    const received = apiData.filter(t => t.transaction_type === 'received')
+        .reduce((sum, t) => {
+            const amount = parseFloat(t.extracted_amount);
+            return sum + (isNaN(amount) ? 0 : amount);
+        }, 0);
+    const payments = apiData.filter(t => t.transaction_type === 'payment')
+        .reduce((sum, t) => {
+            const amount = parseFloat(t.extracted_amount);
+            return sum + (isNaN(amount) ? 0 : amount);
+        }, 0);
+    const uniqueContacts = new Set(apiData.map(t => t.sender_or_receiver)).size;
 
     // Additional stats
-    const avgTransaction = total / mockData.length;
+    const avgTransaction = total / apiData.length;
     const netFlow = received - payments;
 
     return { total, received, payments, uniqueContacts, avgTransaction, netFlow };

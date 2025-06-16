@@ -4,6 +4,7 @@ import { calculateStats } from '../utils/calculations.js';
 // Render enhanced stats cards
 export function renderStatsCards() {
     const stats = calculateStats();
+    console.log('Calculated Stats:', stats);
     const statsContainer = document.getElementById('statsCards');
 
     const cards = [

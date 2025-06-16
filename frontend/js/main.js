@@ -7,9 +7,11 @@ import { renderContactAnalytics } from './components/contactAnalytics.js';
 import { renderTimePatterns } from './components/timePatterns.js';
 import { renderFinancialInsights } from './components/financialInsights.js';
 import { switchTab } from './utils/tabManager.js';
+import { fetchData } from './data/apiData.js';
 
 // Initialize dashboard
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
+    await fetchData();
     renderStatsCards();
     renderCharts();
     renderTransactionList();
@@ -17,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
     renderContactAnalytics();
     renderTimePatterns();
     renderFinancialInsights();
+    window.showTransactionDetails();
 });
 
 // Setup event listeners

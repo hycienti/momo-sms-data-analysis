@@ -1,24 +1,21 @@
-# app.py
 from flask import Flask, jsonify
-import mysql.connector
-from config import db_config
+from Db_Config import connection
 from flask_cors import CORS
 
+
 app = Flask(__name__)
-CORS(app)  # Enable Cross-Origin Resource Sharing
+CORS(app)  # Allow all origins for all routes
 
-def get_db_connection():
-    return mysql.connector.connect(**db_config)
-
-@app.route('/api/messages', methods=['GET'])
-def get_messages():
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM sms_messages")
-    messages = cursor.fetchall()
-    cursor.close()
+@app.route("/api/messages")
+def fetch():
+    conn = connection()
+    sms = conn.execute("SELECT * FROM sms_messages").fetchall()
     conn.close()
-    return jsonify(messages)
+
+    results = [dict(row) for row in sms]
+
+    return jsonify(results)
 
 if __name__ == '__main__':
     app.run(debug=True)
+
